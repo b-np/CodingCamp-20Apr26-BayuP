@@ -99,16 +99,27 @@ This project is designed to be deployed on GitHub Pages. The static nature of th
 
 #### 2. Focus Timer Component
 
-**Purpose:** Provide a 25-minute countdown timer for focus sessions.
+**Purpose:** Provide a customizable countdown timer for focus sessions.
 
 **HTML Structure:**
 ```html
 <section id="timer-section">
-  <div id="timer-display">25:00</div>
+  <h2>Focus Timer</h2>
+  <div id="timer-display-container">
+    <div id="timer-display">25:00</div>
+    <div id="timer-edit-controls" class="hidden">
+      <input type="number" id="timer-minutes-input" min="1" max="99" value="25">
+      <span>:</span>
+      <input type="number" id="timer-seconds-input" min="0" max="59" value="00">
+    </div>
+  </div>
   <div id="timer-controls">
-    <button id="start-btn">Start</button>
-    <button id="stop-btn">Stop</button>
-    <button id="reset-btn">Reset</button>
+    <button id="start-button">Start</button>
+    <button id="stop-button">Stop</button>
+    <button id="reset-button">Reset</button>
+    <button id="timer-edit-button">Adjust Time</button>
+    <button id="timer-save-button" class="hidden">Save</button>
+    <button id="timer-cancel-button" class="hidden">Cancel</button>
   </div>
 </section>
 ```
@@ -116,18 +127,22 @@ This project is designed to be deployed on GitHub Pages. The static nature of th
 **JavaScript Functions:**
 - `startTimer()` - Begins countdown
 - `stopTimer()` - Pauses countdown
-- `resetTimer()` - Resets to 25:00
+- `resetTimer()` - Resets to configured duration
 - `updateTimerDisplay()` - Updates MM:SS display
-- `playNotification()` - Plays audio when timer completes
+- `playTimerNotification()` - Plays audio when timer completes
 - `formatTime(seconds)` - Converts seconds to MM:SS format
+- `enterEditMode()` - Shows input fields for editing duration
+- `exitEditMode(save)` - Hides input fields, optionally saving
+- `loadTimerDuration()` - Loads saved duration from Local Storage
+- `saveTimerDuration(duration)` - Saves duration to Local Storage
 
 **Audio Notification Strategy:**
-The `playNotification()` function uses a fallback approach:
+The `playTimerNotification()` function uses a fallback approach:
 1. First, attempt to play `audio/notification.mp3` if the file exists
 2. If the audio file is missing or fails to load, use the Web Audio API to generate a default notification sound programmatically
 
 ```javascript
-function playNotification() {
+function playTimerNotification() {
   const audio = new Audio('audio/notification.mp3');
   audio.play().catch(() => {
     // Fallback: Generate sound using Web Audio API
@@ -153,11 +168,17 @@ This ensures the timer always has an audio notification regardless of whether a 
 **State:**
 ```javascript
 {
-  timeRemaining: number,  // seconds
-  isRunning: boolean,
-  intervalId: number | null
+  timerDuration: number,      // configured duration in seconds
+  timeRemaining: number,      // seconds remaining
+  isRunning: boolean,         // timer is counting down
+  isEditing: boolean,         // timer is in edit mode
+  intervalId: number | null   // setInterval ID
 }
 ```
+
+**Local Storage:**
+- Key: `dashboard_timer_duration`
+- Value: Duration in seconds (string)
 
 #### 3. Task List Component
 

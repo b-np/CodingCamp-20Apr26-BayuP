@@ -31,7 +31,8 @@
     USERNAME: 'dashboard_username',
     TASKS: 'dashboard_tasks',
     QUICK_LINKS: 'dashboard_links',
-    THEME: 'dashboard_theme'
+    THEME: 'dashboard_theme',
+    TIMER_DURATION: 'dashboard_timer_duration',
   };
 
   // ============================================
@@ -109,10 +110,8 @@
     updateGreeting();
     loadName();
 
-    // Update time every second
     setInterval(updateTime, 1000);
 
-    // Update date and greeting every minute
     setInterval(() => {
       updateDate();
       updateGreeting();
@@ -136,19 +135,14 @@
   // FOCUS TIMER COMPONENT
   // ============================================
 
-  const timerElements = {
-    display: document.getElementById('timer-display'),
-    startButton: document.getElementById('start-button'),
-    stopButton: document.getElementById('stop-button'),
-    resetButton: document.getElementById('reset-button'),
-    announcement: document.getElementById('timer-announcement')
-  };
+  let timerElements = null;
 
-  // const TIMER_DURATION = 25 * 60; // 25 minutes in seconds
-  const TIMER_DURATION = 5; // 25 minutes in seconds
+  const DEFAULT_TIMER_DURATION = 25 * 60; // 25 minutes in seconds
+  let timerDuration = DEFAULT_TIMER_DURATION;
   let timerState = {
-    timeRemaining: TIMER_DURATION,
+    timeRemaining: DEFAULT_TIMER_DURATION,
     isRunning: false,
+    isEditing: false,
     intervalId: null
   };
 
@@ -159,7 +153,62 @@
   }
 
   function updateTimerDisplay() {
-    timerElements.display.textContent = formatTime(timerState.timeRemaining);
+    timerElements.display.timer.textContent = formatTime(timerState.timeRemaining);
+  }
+
+  function loadTimerDuration() {
+    const saved = localStorage.getItem(STORAGE_KEYS.TIMER_DURATION);
+    if (saved) {
+      const duration = parseInt(saved, 10);
+      if (!isNaN(duration) && duration > 0) {
+        timerDuration = duration;
+        timerState.timeRemaining = duration;
+      }
+    }
+  }
+
+  function saveTimerDuration(duration) {
+    localStorage.setItem(STORAGE_KEYS.TIMER_DURATION, duration.toString());
+    timerDuration = duration;
+  }
+
+  function enterEditMode() {
+    if (timerState.isRunning) return;
+
+    timerState.isEditing = true;
+    const mins = Math.floor(timerDuration / 60);
+    const secs = timerDuration % 60;
+
+    timerElements.display.edit.minutesInput.value = mins;
+    timerElements.display.edit.secondsInput.value = String(secs).padStart(2, '0');
+
+    timerElements.display.timer.classList.add('hidden');
+    timerElements.display.edit.container.classList.remove('hidden');
+    timerElements.editControls.editButton.classList.add('hidden');
+    timerElements.editControls.saveButton.classList.remove('hidden');
+    timerElements.editControls.cancelButton.classList.remove('hidden');
+
+    timerElements.display.edit.minutesInput.focus();
+    timerElements.display.edit.minutesInput.select();
+  }
+
+  function exitEditMode(save = false) {
+    if (save) {
+      const mins = parseInt(timerElements.display.edit.minutesInput.value, 10) || 0;
+      const secs = parseInt(timerElements.display.edit.secondsInput.value, 10) || 0;
+      const totalSeconds = Math.max(1, mins * 60 + secs);
+
+      saveTimerDuration(totalSeconds);
+      timerState.timeRemaining = totalSeconds;
+      updateTimerDisplay();
+    }
+
+    timerState.isEditing = false;
+    timerElements.display.timer.classList.remove('hidden');
+    timerElements.display.edit.container.classList.add('hidden');
+    timerElements.editControls.editButton.classList.remove('hidden');
+    timerElements.editControls.saveButton.classList.add('hidden');
+    timerElements.editControls.cancelButton.classList.add('hidden');
   }
 
   function playTimerNotification() {
@@ -198,17 +247,19 @@
   }
 
   function announceTimerComplete() {
-    timerElements.announcement.textContent = 'Timer complete! 25 minutes focus session ended.';
+    const mins = Math.floor(timerDuration / 60);
+    timerElements.announcement.textContent = `Timer complete! ${mins} minute focus session ended.`;
     setTimeout(() => {
       timerElements.announcement.textContent = '';
     }, 3000);
   }
 
   function startTimer() {
-    if (timerState.isRunning) return;
+    if (timerState.isRunning || timerState.isEditing) return;
 
     timerState.isRunning = true;
-    timerElements.startButton.disabled = true;
+    timerElements.controls.startButton.disabled = true;
+    timerElements.editControls.editButton.disabled = true;
 
     timerState.intervalId = setInterval(() => {
       timerState.timeRemaining--;
@@ -227,7 +278,8 @@
     if (!timerState.isRunning) return;
 
     timerState.isRunning = false;
-    timerElements.startButton.disabled = false;
+    timerElements.controls.startButton.disabled = false;
+    timerElements.editControls.editButton.disabled = false;
 
     if (timerState.intervalId) {
       clearInterval(timerState.intervalId);
@@ -237,16 +289,65 @@
 
   function resetTimer() {
     stopTimer();
-    timerState.timeRemaining = TIMER_DURATION;
+    timerState.timeRemaining = timerDuration;
     updateTimerDisplay();
   }
 
   function initTimer() {
+    // Initialize elements after DOM is ready
+    timerElements = {
+      display: {
+        container: document.getElementById('timer-display-container'),
+        timer: document.getElementById('timer-display'),
+        edit: {
+          container: document.getElementById('timer-display-edit'),
+          minutesInput: document.getElementById('timer-minutes-input'),
+          secondsInput: document.getElementById('timer-seconds-input'),
+        },
+      },
+
+      editControls: {
+        container: document.getElementById('timer-edit-controls'),
+        editButton: document.getElementById('edit-button'),
+        saveButton: document.getElementById('save-button'),
+        cancelButton: document.getElementById('cancel-button'),
+      },
+      
+      controls: {
+        container: document.getElementById('timer-controls'),
+        startButton: document.getElementById('start-button'),
+        stopButton: document.getElementById('stop-button'),
+        resetButton: document.getElementById('reset-button'),
+      },
+
+      announcement: document.getElementById('timer-announcement')
+    };
+
+    loadTimerDuration();
     updateTimerDisplay();
 
-    timerElements.startButton.addEventListener('click', startTimer);
-    timerElements.stopButton.addEventListener('click', stopTimer);
-    timerElements.resetButton.addEventListener('click', resetTimer);
+    timerElements.controls.startButton.addEventListener('click', startTimer);
+    timerElements.controls.stopButton.addEventListener('click', stopTimer);
+    timerElements.controls.resetButton.addEventListener('click', resetTimer);
+    timerElements.editControls.editButton.addEventListener('click', enterEditMode);
+    timerElements.editControls.saveButton.addEventListener('click', () => exitEditMode(true));
+    timerElements.editControls.cancelButton.addEventListener('click', () => exitEditMode(false));
+
+    // Handle Enter key in edit mode
+    timerElements.display.edit.minutesInput.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter') {
+        exitEditMode(true);
+      } else if (e.key === 'Escape') {
+        exitEditMode(false);
+      }
+    });
+    timerElements.display.edit.secondsInput.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter') {
+        exitEditMode(true);
+      } else if (e.key === 'Escape') {
+        exitEditMode(false);
+      }
+    });
   }
 
   // ============================================
@@ -271,12 +372,11 @@
     localStorage.setItem(STORAGE_KEYS.TASKS, JSON.stringify(tasks));
   }
 
-  function addTask(text, deadline = null, priority = null) {
+  function addTask(text, priority = null) {
     const task = {
       id: generateId(),
       text: sanitizeText(text),
       completed: false,
-      deadline: deadline || null,
       priority: priority || null,
       createdAt: Date.now()
     };
@@ -343,14 +443,14 @@
   }
 
   function renderTasks() {
-    const taskTemplate = (task) => `
+    const taskTemplate = (task) =>
+    `
       <li class="task-item ${task.completed ? 'completed' : ''}" data-id="${task.id}" role="listitem">
         <input type="checkbox" class="task-checkbox" 
                ${task.completed ? 'checked' : ''} 
                aria-checked="${task.completed}"
                aria-label="Mark task as ${task.completed ? 'incomplete' : 'complete'}">
         <span class="task-text">${task.text}</span>
-        ${task.deadline ? `<span class="task-deadline">${task.deadline}</span>` : ''}
         ${task.priority ? `<span class="task-priority ${task.priority}">${task.priority}</span>` : ''}
         <button class="edit-task-button" aria-label="Edit task">Edit</button>
         <button class="delete-task-button" aria-label="Delete task">Delete</button>
@@ -410,13 +510,11 @@
     const text = taskElements.input.value.trim();
     if (!text) return;
 
-    const deadline = taskElements.deadline.value || null;
     const priority = taskElements.priority.value || null;
 
-    addTask(text, deadline, priority);
+    addTask(text, priority);
 
     taskElements.input.value = '';
-    taskElements.deadline.value = '';
     taskElements.priority.value = '';
     taskElements.input.focus();
   }
@@ -425,7 +523,6 @@
     // Initialize elements after DOM is ready
     taskElements = {
       input: document.getElementById('task-input'),
-      deadline: document.getElementById('task-deadline'),
       priority: document.getElementById('task-priority'),
       addButton: document.getElementById('add-task-button'),
       sortSelect: document.getElementById('sort-select'),
@@ -450,7 +547,7 @@
   // QUICK LINKS COMPONENT
   // ============================================
 
-  const linkElements = {
+  const quickLinkElements = {
     labelInput: document.getElementById('quick-link-label'),
     urlInput: document.getElementById('quick-link-url'),
     addButton: document.getElementById('add-quick-link-button'),
@@ -474,6 +571,18 @@
     localStorage.setItem(STORAGE_KEYS.QUICK_LINKS, JSON.stringify(quickLinks));
   }
 
+  // TODO: http:// currently doesn't work.
+  function formatQuickLinkUrl(url) {
+    let trimmedUrl = url.trim();
+    if (!/^https?:\/\//i.test(trimmedUrl)) trimmedUrl = `https://${trimmedUrl}`;
+    try {
+      const result = new URL(trimmedUrl);
+      return result.href;
+    } catch {
+      return null;
+    }
+  }
+
   function isValidUrl(url) {
     try {
       new URL(url);
@@ -484,8 +593,9 @@
   }
 
   function addQuickLink(name, url) {
+    url = formatQuickLinkUrl(url);
     if (!isValidUrl(url)) {
-      alert('Please enter a valid URL (e.g., https://example.com)');
+      alert('Please enter a valid URL (e.g., example.com, https://example.com)');
       return false;
     }
 
@@ -510,17 +620,18 @@
   }
 
   function renderQuickLinks() {
-    const linkTemplate = (link) => `
+    const linkTemplate = (link) => 
+    `
       <div class="quick-link-item" data-id="${link.id}">
         <a href="${link.url}" target="_blank" rel="noopener noreferrer" aria-label="Open ${link.name}">${link.name}</a>
         <button class="delete-quick-link-button" aria-label="Delete ${link.name} link">×</button>
       </div>
     `;
 
-    linkElements.container.innerHTML = quickLinks.map(link => linkTemplate(link)).join('');
+    quickLinkElements.container.innerHTML = quickLinks.map(link => linkTemplate(link)).join('');
   }
 
-  function handleLinksClick(e) {
+  function handleQuickLinksClick(e) {
     if (e.target.classList.contains('delete-quick-link-button')) {
       const linkItem = e.target.closest('.quick-link-item');
       if (linkItem) {
@@ -530,8 +641,8 @@
   }
 
   function handleAddQuickLink() {
-    const name = linkElements.labelInput.value.trim();
-    const url = linkElements.urlInput.value.trim();
+    const name = quickLinkElements.labelInput.value.trim();
+    const url = quickLinkElements.urlInput.value.trim();
 
     if (!name || !url) {
       alert('Please enter both a name and URL');
@@ -539,9 +650,9 @@
     }
 
     if (addQuickLink(name, url)) {
-      linkElements.labelInput.value = '';
-      linkElements.urlInput.value = '';
-      linkElements.labelInput.focus();
+      quickLinkElements.labelInput.value = '';
+      quickLinkElements.urlInput.value = '';
+      quickLinkElements.labelInput.focus();
     }
   }
 
@@ -549,18 +660,18 @@
     loadQuickLinks();
     renderQuickLinks();
 
-    linkElements.addButton.addEventListener('click', handleAddQuickLink);
-    linkElements.urlInput.addEventListener('keydown', (e) => {
+    quickLinkElements.addButton.addEventListener('click', handleAddQuickLink);
+    quickLinkElements.urlInput.addEventListener('keydown', (e) => {
       if (e.key === 'Enter') {
         handleAddQuickLink();
       }
     });
-    linkElements.labelInput.addEventListener('keydown', (e) => {
+    quickLinkElements.labelInput.addEventListener('keydown', (e) => {
       if (e.key === 'Enter') {
-        linkElements.urlInput.focus();
+        quickLinkElements.urlInput.focus();
       }
     });
-    linkElements.container.addEventListener('click', handleLinksClick);
+    quickLinkElements.container.addEventListener('click', handleQuickLinksClick);
   }
 
   // ============================================

@@ -24,9 +24,13 @@
 - [x] 3.2 Implement formatTime() function for MM:SS display
 - [x] 3.3 Implement startTimer() function with setInterval
 - [x] 3.4 Implement stopTimer() function to pause countdown
-- [x] 3.5 Implement resetTimer() function to reset to 25:00
+- [x] 3.5 Implement resetTimer() function to reset to configured duration
 - [x] 3.6 Implement audio notification playback on timer complete
 - [x] 3.7 Add CSS styles for timer component
+- [x] 3.8 Add timer edit button and input fields for minutes/seconds
+- [x] 3.9 Implement enterEditMode() and exitEditMode() functions
+- [x] 3.10 Implement timer duration persistence to Local Storage
+- [x] 3.11 Add CSS styles for timer edit controls
 
 ## Phase 4: Task List Component
 

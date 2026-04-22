@@ -162,6 +162,11 @@ section h2 {
   font-size: 1.25rem;
 }
 
+label[for] {
+  font-size: 0.875rem;
+  color: var(--text-secondary);
+}
+
 /* Greeting Section */
 #greeting-section {
   text-align: center;
@@ -229,12 +234,54 @@ section h2 {
   text-align: center;
 }
 
+#timer-display-container {
+  margin-bottom: var(--spacing-md);
+}
+
 #timer-display {
   font-size: 3rem;
   font-weight: 300;
   font-variant-numeric: tabular-nums;
-  margin-bottom: var(--spacing-md);
   letter-spacing: 4px;
+}
+
+#timer-display-edit {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--spacing-xs);
+  font-size: 2rem;
+}
+
+#timer-minutes-input,
+#timer-seconds-input {
+  width: 80px;
+  padding: var(--spacing-sm);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-sm);
+  font-size: 2rem;
+  font-weight: 300;
+  text-align: center;
+  background: var(--bg-primary);
+  color: var(--text-primary);
+  font-variant-numeric: tabular-nums;
+}
+
+#timer-edit-controls {
+  display: flex;
+  gap: var(--spacing-sm);
+  justify-content: center;
+  margin-bottom: var(--spacing-md);
+}
+
+#timer-edit-controls button {
+  padding: var(--spacing-sm) var(--spacing-md);
+  border: none;
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  font-size: 1rem;
+  font-weight: 500;
+  transition: all 0.2s ease;
 }
 
 #timer-controls {
@@ -279,6 +326,37 @@ section h2 {
 }
 
 #reset-button:hover {
+  background: var(--border-color);
+}
+
+#edit-button {
+  background: var(--bg-primary);
+  color: var(--text-secondary);
+  border: 1px solid var(--border-color);
+}
+
+#edit-button:hover {
+  background: var(--accent-color);
+  color: white;
+  border-color: var(--accent-color);
+}
+
+#save-button {
+  background: var(--priority-low);
+  color: white;
+}
+
+#save-button:hover {
+  background: #219a52;
+}
+
+#cancel-button {
+  background: var(--bg-primary);
+  color: var(--text-secondary);
+  border: 1px solid var(--border-color);
+}
+
+#cancel-button:hover {
   background: var(--border-color);
 }
 
@@ -336,13 +414,9 @@ section h2 {
 #task-sort {
   display: flex;
   align-items: center;
+  justify-content: flex-end;
   gap: var(--spacing-sm);
   margin-bottom: var(--spacing-md);
-}
-
-#task-sort label {
-  font-size: 0.875rem;
-  color: var(--text-secondary);
 }
 
 #sort-select {
@@ -399,14 +473,6 @@ section h2 {
   font-size: 1rem;
   background: var(--bg-primary);
   color: var(--text-primary);
-}
-
-.task-deadline {
-  font-size: 0.75rem;
-  color: var(--text-secondary);
-  padding: var(--spacing-xs) var(--spacing-sm);
-  background: var(--bg-secondary);
-  border-radius: var(--radius-sm);
 }
 
 .task-priority {
@@ -564,7 +630,6 @@ section h2 {
   }
 
   #task-input,
-  #task-deadline,
   #task-priority {
     width: 100%;
   }

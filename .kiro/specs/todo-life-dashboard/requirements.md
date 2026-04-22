@@ -45,10 +45,16 @@ A simple, client-side todo list life dashboard that helps users organize their d
 2. THE Focus_Timer SHALL display remaining time in minutes and seconds format (MM:SS)
 3. WHEN the start button is clicked, THE Focus_Timer SHALL begin counting down
 4. WHEN the stop button is clicked, THE Focus_Timer SHALL pause the countdown
-5. WHEN the reset button is clicked, THE Focus_Timer SHALL reset to 25 minutes
+5. WHEN the reset button is clicked, THE Focus_Timer SHALL reset to the configured duration
 6. WHEN the timer reaches zero, THE Focus_Timer SHALL play an audio notification
 7. THE Focus_Timer SHALL include a default audio notification sound
 8. WHILE the timer is running, THE Focus_Timer SHALL update the display every second
+9. THE Focus_Timer SHALL provide an "Adjust Time" button to edit the timer duration
+10. WHEN the "Adjust Time" button is clicked, THE Focus_Timer SHALL display input fields for minutes and seconds
+11. THE Focus_Timer SHALL allow users to save a custom timer duration
+12. THE Focus_Timer SHALL save the custom duration to Local_Storage
+13. WHEN the page is loaded, THE Focus_Timer SHALL load the saved duration from Local_Storage
+14. THE Focus_Timer SHALL NOT allow editing the duration while the timer is running
 
 ### Requirement 3: Task Management
 
