@@ -1,5 +1,7 @@
 /* CSS Reset */
-*, *::before, *::after {
+*,
+*::before,
+*::after {
   box-sizing: border-box;
   margin: 0;
   padding: 0;
@@ -16,19 +18,19 @@
   --border-color: #e0e0e0;
   --shadow: rgba(0, 0, 0, 0.1);
   --focus-outline: #4a90d9;
-  
+
   /* Priority colors */
   --priority-high: #e74c3c;
   --priority-medium: #f39c12;
   --priority-low: #27ae60;
-  
+
   /* Spacing */
   --spacing-xs: 0.25rem;
   --spacing-sm: 0.5rem;
   --spacing-md: 1rem;
   --spacing-lg: 1.5rem;
   --spacing-xl: 2rem;
-  
+
   /* Border radius */
   --radius-sm: 4px;
   --radius-md: 8px;
@@ -117,7 +119,7 @@ header {
 }
 
 /* Icon Button */
-.icon-btn {
+.icon-button {
   background: var(--bg-secondary);
   border: 1px solid var(--border-color);
   border-radius: var(--radius-md);
@@ -127,12 +129,12 @@ header {
   transition: background-color 0.2s ease, transform 0.1s ease;
 }
 
-.icon-btn:hover {
+.icon-button:hover {
   background: var(--accent-color);
   color: white;
 }
 
-.icon-btn:active {
+.icon-button:active {
   transform: scale(0.95);
 }
 
@@ -190,12 +192,12 @@ section h2 {
   flex-wrap: wrap;
 }
 
-#user-name {
+#greeting-name {
   font-weight: 600;
   color: var(--accent-color);
 }
 
-#edit-name-btn {
+#edit-name-button {
   background: transparent;
   border: 1px solid var(--border-color);
   border-radius: var(--radius-sm);
@@ -206,13 +208,13 @@ section h2 {
   transition: all 0.2s ease;
 }
 
-#edit-name-btn:hover {
+#edit-name-button:hover {
   background: var(--accent-color);
   color: white;
   border-color: var(--accent-color);
 }
 
-#name-input {
+#edit-name-input {
   padding: var(--spacing-xs) var(--spacing-sm);
   border: 1px solid var(--border-color);
   border-radius: var(--radius-sm);
@@ -252,31 +254,31 @@ section h2 {
   transition: all 0.2s ease;
 }
 
-#start-btn {
+#start-button {
   background: var(--accent-color);
   color: white;
 }
 
-#start-btn:hover {
+#start-button:hover {
   background: var(--accent-hover);
 }
 
-#stop-btn {
+#stop-button {
   background: var(--priority-high);
   color: white;
 }
 
-#stop-btn:hover {
+#stop-button:hover {
   background: #c0392b;
 }
 
-#reset-btn {
+#reset-button {
   background: var(--bg-primary);
   color: var(--text-primary);
   border: 1px solid var(--border-color);
 }
 
-#reset-btn:hover {
+#reset-button:hover {
   background: var(--border-color);
 }
 
@@ -309,7 +311,7 @@ section h2 {
   color: var(--text-primary);
 }
 
-#add-task-btn {
+#add-task-button {
   padding: var(--spacing-sm) var(--spacing-md);
   background: var(--accent-color);
   color: white;
@@ -320,7 +322,7 @@ section h2 {
   transition: background-color 0.2s ease;
 }
 
-#add-task-btn:hover {
+#add-task-button:hover {
   background: var(--accent-hover);
 }
 
@@ -430,8 +432,8 @@ section h2 {
   color: var(--priority-low);
 }
 
-.edit-task-btn,
-.delete-task-btn {
+.edit-task-button,
+.delete-task-button {
   padding: var(--spacing-xs) var(--spacing-sm);
   border: 1px solid var(--border-color);
   border-radius: var(--radius-sm);
@@ -442,27 +444,27 @@ section h2 {
   transition: all 0.2s ease;
 }
 
-.edit-task-btn:hover {
+.edit-task-button:hover {
   background: var(--accent-color);
   color: white;
   border-color: var(--accent-color);
 }
 
-.delete-task-btn:hover {
+.delete-task-button:hover {
   background: var(--priority-high);
   color: white;
   border-color: var(--priority-high);
 }
 
 /* Links Section */
-#link-form {
+#quick-link-form {
   display: flex;
   gap: var(--spacing-sm);
   margin-bottom: var(--spacing-md);
   flex-wrap: wrap;
 }
 
-#link-name {
+#quick-link-label {
   flex: 1;
   min-width: 120px;
   padding: var(--spacing-sm);
@@ -473,7 +475,7 @@ section h2 {
   color: var(--text-primary);
 }
 
-#link-url {
+#quick-link-url {
   flex: 2;
   min-width: 200px;
   padding: var(--spacing-sm);
@@ -484,7 +486,7 @@ section h2 {
   color: var(--text-primary);
 }
 
-#add-link-btn {
+#add-quick-link-button {
   padding: var(--spacing-sm) var(--spacing-md);
   background: var(--accent-color);
   color: white;
@@ -495,17 +497,17 @@ section h2 {
   transition: background-color 0.2s ease;
 }
 
-#add-link-btn:hover {
+#add-quick-link-button:hover {
   background: var(--accent-hover);
 }
 
-.links-grid {
+.quick-links-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
   gap: var(--spacing-sm);
 }
 
-.link-item {
+.quick-link-item {
   display: flex;
   align-items: center;
   gap: var(--spacing-xs);
@@ -515,7 +517,7 @@ section h2 {
   overflow: hidden;
 }
 
-.link-item a {
+.quick-link-item a {
   flex: 1;
   padding: var(--spacing-sm);
   text-decoration: none;
@@ -524,12 +526,12 @@ section h2 {
   transition: background-color 0.2s ease;
 }
 
-.link-item a:hover {
+.quick-link-item a:hover {
   background: var(--accent-color);
   color: white;
 }
 
-.delete-link-btn {
+.delete-quick-link-button {
   padding: var(--spacing-sm);
   background: transparent;
   border: none;
@@ -539,7 +541,7 @@ section h2 {
   transition: color 0.2s ease;
 }
 
-.delete-link-btn:hover {
+.delete-quick-link-button:hover {
   color: var(--priority-high);
 }
 
@@ -548,35 +550,35 @@ section h2 {
   #time-display {
     font-size: 3rem;
   }
-  
+
   #timer-display {
     font-size: 2.5rem;
   }
-  
+
   #greeting-container {
     font-size: 1.25rem;
   }
-  
+
   #task-input-area {
     flex-direction: column;
   }
-  
+
   #task-input,
   #task-deadline,
   #task-priority {
     width: 100%;
   }
-  
+
   #link-form {
     flex-direction: column;
   }
-  
-  #link-name,
-  #link-url {
+
+  #quick-link-label,
+  #quick-link-url {
     width: 100%;
   }
-  
-  .links-grid {
+
+  .quick-links-grid {
     grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
   }
 }

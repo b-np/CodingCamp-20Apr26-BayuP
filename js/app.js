@@ -1,7 +1,7 @@
 // Todo Life Dashboard - Main Application
 // All components in a single file as per requirements
 
-(function() {
+(function () {
   'use strict';
 
   // ============================================
@@ -30,7 +30,7 @@
   const STORAGE_KEYS = {
     USERNAME: 'dashboard_username',
     TASKS: 'dashboard_tasks',
-    LINKS: 'dashboard_links',
+    QUICK_LINKS: 'dashboard_links',
     THEME: 'dashboard_theme'
   };
 
@@ -42,9 +42,9 @@
     timeDisplay: document.getElementById('time-display'),
     dateDisplay: document.getElementById('date-display'),
     greetingText: document.getElementById('greeting-text'),
-    userName: document.getElementById('user-name'),
-    editNameBtn: document.getElementById('edit-name-btn'),
-    nameInput: document.getElementById('name-input')
+    greetingName: document.getElementById('greeting-name'),
+    editNameButton: document.getElementById('edit-name-button'),
+    editNameInput: document.getElementById('edit-name-input')
   };
 
   function updateTime() {
@@ -75,32 +75,32 @@
   function loadName() {
     const savedName = localStorage.getItem(STORAGE_KEYS.USERNAME);
     if (savedName) {
-      greetingElements.userName.textContent = savedName;
+      greetingElements.greetingName.textContent = savedName;
     }
   }
 
   function saveName(name) {
     localStorage.setItem(STORAGE_KEYS.USERNAME, name);
-    greetingElements.userName.textContent = name;
+    greetingElements.greetingName.textContent = name;
   }
 
   function editName() {
-    greetingElements.nameInput.value = greetingElements.userName.textContent;
-    greetingElements.userName.classList.add('hidden');
-    greetingElements.editNameBtn.classList.add('hidden');
-    greetingElements.nameInput.classList.remove('hidden');
-    greetingElements.nameInput.focus();
-    greetingElements.nameInput.select();
+    greetingElements.editNameInput.value = greetingElements.greetingName.textContent;
+    greetingElements.greetingName.classList.add('hidden');
+    greetingElements.editNameButton.classList.add('hidden');
+    greetingElements.editNameInput.classList.remove('hidden');
+    greetingElements.editNameInput.focus();
+    greetingElements.editNameInput.select();
   }
 
   function finishNameEdit() {
-    const newName = greetingElements.nameInput.value.trim();
+    const newName = greetingElements.editNameInput.value.trim();
     if (newName) {
       saveName(newName);
     }
-    greetingElements.nameInput.classList.add('hidden');
-    greetingElements.userName.classList.remove('hidden');
-    greetingElements.editNameBtn.classList.remove('hidden');
+    greetingElements.editNameInput.classList.add('hidden');
+    greetingElements.greetingName.classList.remove('hidden');
+    greetingElements.editNameButton.classList.remove('hidden');
   }
 
   function initGreeting() {
@@ -119,15 +119,15 @@
     }, 60000);
 
     // Event listeners
-    greetingElements.editNameBtn.addEventListener('click', editName);
-    greetingElements.nameInput.addEventListener('blur', finishNameEdit);
-    greetingElements.nameInput.addEventListener('keydown', (e) => {
+    greetingElements.editNameButton.addEventListener('click', editName);
+    greetingElements.editNameInput.addEventListener('blur', finishNameEdit);
+    greetingElements.editNameInput.addEventListener('keydown', (e) => {
       if (e.key === 'Enter') {
         finishNameEdit();
       } else if (e.key === 'Escape') {
-        greetingElements.nameInput.classList.add('hidden');
-        greetingElements.userName.classList.remove('hidden');
-        greetingElements.editNameBtn.classList.remove('hidden');
+        greetingElements.editNameInput.classList.add('hidden');
+        greetingElements.greetingName.classList.remove('hidden');
+        greetingElements.editNameButton.classList.remove('hidden');
       }
     });
   }
@@ -138,13 +138,14 @@
 
   const timerElements = {
     display: document.getElementById('timer-display'),
-    startBtn: document.getElementById('start-btn'),
-    stopBtn: document.getElementById('stop-btn'),
-    resetBtn: document.getElementById('reset-btn'),
+    startButton: document.getElementById('start-button'),
+    stopButton: document.getElementById('stop-button'),
+    resetButton: document.getElementById('reset-button'),
     announcement: document.getElementById('timer-announcement')
   };
 
-  const TIMER_DURATION = 25 * 60; // 25 minutes in seconds
+  // const TIMER_DURATION = 25 * 60; // 25 minutes in seconds
+  const TIMER_DURATION = 5; // 25 minutes in seconds
   let timerState = {
     timeRemaining: TIMER_DURATION,
     isRunning: false,
@@ -161,24 +162,22 @@
     timerElements.display.textContent = formatTime(timerState.timeRemaining);
   }
 
-  function playNotification() {
+  function playTimerNotification() {
     // Try to play audio file first
     const audio = new Audio('audio/notification.mp3');
-    
+
     audio.play().catch(() => {
-      // Fallback: Generate sound using Web Audio API
       try {
-        playWebAudioNotification();
+        playNotificationThroughBrowser();
       } catch (e) {
-        // Final fallback: Visual notification only
-        console.log('Audio notification not available');
+        console.warn('Audio notification not available');
       }
     });
   }
 
-  function playWebAudioNotification() {
+  function playNotificationThroughBrowser() {
     const audioContext = new (window.AudioContext || window.webkitAudioContext)();
-    
+
     // Resume audio context if suspended (required by browsers)
     if (audioContext.state === 'suspended') {
       audioContext.resume();
@@ -209,7 +208,7 @@
     if (timerState.isRunning) return;
 
     timerState.isRunning = true;
-    timerElements.startBtn.disabled = true;
+    timerElements.startButton.disabled = true;
 
     timerState.intervalId = setInterval(() => {
       timerState.timeRemaining--;
@@ -218,7 +217,7 @@
       if (timerState.timeRemaining <= 0) {
         stopTimer();
         resetTimer();
-        playNotification();
+        playTimerNotification();
         announceTimerComplete();
       }
     }, 1000);
@@ -228,7 +227,7 @@
     if (!timerState.isRunning) return;
 
     timerState.isRunning = false;
-    timerElements.startBtn.disabled = false;
+    timerElements.startButton.disabled = false;
 
     if (timerState.intervalId) {
       clearInterval(timerState.intervalId);
@@ -245,9 +244,9 @@
   function initTimer() {
     updateTimerDisplay();
 
-    timerElements.startBtn.addEventListener('click', startTimer);
-    timerElements.stopBtn.addEventListener('click', stopTimer);
-    timerElements.resetBtn.addEventListener('click', resetTimer);
+    timerElements.startButton.addEventListener('click', startTimer);
+    timerElements.stopButton.addEventListener('click', stopTimer);
+    timerElements.resetButton.addEventListener('click', resetTimer);
   }
 
   // ============================================
@@ -344,10 +343,7 @@
   }
 
   function renderTasks() {
-    const criteria = taskElements.sortSelect.value;
-    const sorted = sortTasks(criteria);
-
-    taskElements.list.innerHTML = sorted.map(task => `
+    const taskTemplate = (task) => `
       <li class="task-item ${task.completed ? 'completed' : ''}" data-id="${task.id}" role="listitem">
         <input type="checkbox" class="task-checkbox" 
                ${task.completed ? 'checked' : ''} 
@@ -356,10 +352,15 @@
         <span class="task-text">${task.text}</span>
         ${task.deadline ? `<span class="task-deadline">${task.deadline}</span>` : ''}
         ${task.priority ? `<span class="task-priority ${task.priority}">${task.priority}</span>` : ''}
-        <button class="edit-task-btn" aria-label="Edit task">Edit</button>
-        <button class="delete-task-btn" aria-label="Delete task">Delete</button>
+        <button class="edit-task-button" aria-label="Edit task">Edit</button>
+        <button class="delete-task-button" aria-label="Delete task">Delete</button>
       </li>
-    `).join('');
+    `;
+
+    const criteria = taskElements.sortSelect.value;
+    const sorted = sortTasks(criteria);
+
+    taskElements.list.innerHTML = sorted.map(task => taskTemplate(task)).join('');
   }
 
   function handleTaskListClick(e) {
@@ -370,7 +371,7 @@
 
     if (e.target.classList.contains('task-checkbox')) {
       toggleTaskComplete(taskId);
-    } else if (e.target.classList.contains('edit-task-btn')) {
+    } else if (e.target.classList.contains('edit-task-button')) {
       const task = tasks.find(t => t.id === taskId);
       if (task) {
         const textSpan = taskItem.querySelector('.task-text');
@@ -400,7 +401,7 @@
           }
         });
       }
-    } else if (e.target.classList.contains('delete-task-btn')) {
+    } else if (e.target.classList.contains('delete-task-button')) {
       deleteTask(taskId);
     }
   }
@@ -426,7 +427,7 @@
       input: document.getElementById('task-input'),
       deadline: document.getElementById('task-deadline'),
       priority: document.getElementById('task-priority'),
-      addBtn: document.getElementById('add-task-btn'),
+      addButton: document.getElementById('add-task-button'),
       sortSelect: document.getElementById('sort-select'),
       list: document.getElementById('task-list'),
       announcement: document.getElementById('task-announcement')
@@ -435,7 +436,7 @@
     loadTasks();
     renderTasks();
 
-    taskElements.addBtn.addEventListener('click', handleAddTask);
+    taskElements.addButton.addEventListener('click', handleAddTask);
     taskElements.input.addEventListener('keydown', (e) => {
       if (e.key === 'Enter') {
         handleAddTask();
@@ -450,27 +451,27 @@
   // ============================================
 
   const linkElements = {
-    nameInput: document.getElementById('link-name'),
-    urlInput: document.getElementById('link-url'),
-    addBtn: document.getElementById('add-link-btn'),
-    container: document.getElementById('links-container')
+    labelInput: document.getElementById('quick-link-label'),
+    urlInput: document.getElementById('quick-link-url'),
+    addButton: document.getElementById('add-quick-link-button'),
+    container: document.getElementById('quick-links-container')
   };
 
-  let links = [];
+  let quickLinks = [];
 
-  function loadLinks() {
-    const saved = localStorage.getItem(STORAGE_KEYS.LINKS);
+  function loadQuickLinks() {
+    const saved = localStorage.getItem(STORAGE_KEYS.QUICK_LINKS);
     if (saved) {
       try {
-        links = JSON.parse(saved);
+        quickLinks = JSON.parse(saved);
       } catch (e) {
-        links = [];
+        quickLinks = [];
       }
     }
   }
 
-  function saveLinks() {
-    localStorage.setItem(STORAGE_KEYS.LINKS, JSON.stringify(links));
+  function saveQuickLinks() {
+    localStorage.setItem(STORAGE_KEYS.QUICK_LINKS, JSON.stringify(quickLinks));
   }
 
   function isValidUrl(url) {
@@ -482,52 +483,54 @@
     }
   }
 
-  function addLink(name, url) {
+  function addQuickLink(name, url) {
     if (!isValidUrl(url)) {
       alert('Please enter a valid URL (e.g., https://example.com)');
       return false;
     }
 
-    const link = {
+    const quickLink = {
       id: generateId(),
       name: sanitizeText(name),
       url: url
     };
-    links.push(link);
-    saveLinks();
-    renderLinks();
+    quickLinks.push(quickLink);
+    saveQuickLinks();
+    renderQuickLinks();
     return true;
   }
 
-  function deleteLink(id) {
-    const index = links.findIndex(l => l.id === id);
+  function deleteQuickLink(id) {
+    const index = quickLinks.findIndex(l => l.id === id);
     if (index !== -1) {
-      links.splice(index, 1);
-      saveLinks();
-      renderLinks();
+      quickLinks.splice(index, 1);
+      saveQuickLinks();
+      renderQuickLinks();
     }
   }
 
-  function renderLinks() {
-    linkElements.container.innerHTML = links.map(link => `
-      <div class="link-item" data-id="${link.id}">
+  function renderQuickLinks() {
+    const linkTemplate = (link) => `
+      <div class="quick-link-item" data-id="${link.id}">
         <a href="${link.url}" target="_blank" rel="noopener noreferrer" aria-label="Open ${link.name}">${link.name}</a>
-        <button class="delete-link-btn" aria-label="Delete ${link.name} link">×</button>
+        <button class="delete-quick-link-button" aria-label="Delete ${link.name} link">×</button>
       </div>
-    `).join('');
+    `;
+
+    linkElements.container.innerHTML = quickLinks.map(link => linkTemplate(link)).join('');
   }
 
   function handleLinksClick(e) {
-    if (e.target.classList.contains('delete-link-btn')) {
-      const linkItem = e.target.closest('.link-item');
+    if (e.target.classList.contains('delete-quick-link-button')) {
+      const linkItem = e.target.closest('.quick-link-item');
       if (linkItem) {
-        deleteLink(linkItem.dataset.id);
+        deleteQuickLink(linkItem.dataset.id);
       }
     }
   }
 
-  function handleAddLink() {
-    const name = linkElements.nameInput.value.trim();
+  function handleAddQuickLink() {
+    const name = linkElements.labelInput.value.trim();
     const url = linkElements.urlInput.value.trim();
 
     if (!name || !url) {
@@ -535,24 +538,24 @@
       return;
     }
 
-    if (addLink(name, url)) {
-      linkElements.nameInput.value = '';
+    if (addQuickLink(name, url)) {
+      linkElements.labelInput.value = '';
       linkElements.urlInput.value = '';
-      linkElements.nameInput.focus();
+      linkElements.labelInput.focus();
     }
   }
 
-  function initLinks() {
-    loadLinks();
-    renderLinks();
+  function initQuickLinks() {
+    loadQuickLinks();
+    renderQuickLinks();
 
-    linkElements.addBtn.addEventListener('click', handleAddLink);
+    linkElements.addButton.addEventListener('click', handleAddQuickLink);
     linkElements.urlInput.addEventListener('keydown', (e) => {
       if (e.key === 'Enter') {
-        handleAddLink();
+        handleAddQuickLink();
       }
     });
-    linkElements.nameInput.addEventListener('keydown', (e) => {
+    linkElements.labelInput.addEventListener('keydown', (e) => {
       if (e.key === 'Enter') {
         linkElements.urlInput.focus();
       }
@@ -618,7 +621,7 @@
     initGreeting();
     initTimer();
     initTasks();
-    initLinks();
+    initQuickLinks();
   }
 
   // Run when DOM is ready
