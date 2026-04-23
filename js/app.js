@@ -79,44 +79,46 @@
   }
 
   function editName() {
-    greetingElements.edit.nameInput.value = greetingElements.greetingName.textContent;
+    greetingElements.edit.input.nameInput.value = greetingElements.greetingName.textContent;
 
-    greetingElements.editNameButton.classList.add('hidden');
     greetingElements.greetingName.classList.add('hidden');
-    greetingElements.edit.container.classList.remove('hidden');
-    greetingElements.edit.nameInput.focus();
-    greetingElements.edit.nameInput.select();
+    greetingElements.edit.button.classList.add('hidden');
+
+    greetingElements.edit.input.container.classList.remove('hidden');
+    greetingElements.edit.input.nameInput.focus();
+    greetingElements.edit.input.nameInput.select();
   }
 
-  function finishNameEdit() {
-    const newName = greetingElements.edit.nameInput.value.trim();
+  function saveNameEdit() {
+    const newName = greetingElements.edit.input.nameInput.value.trim();
     if (newName) {
       saveName(newName);
     }
-    greetingElements.edit.container.classList.add('hidden');
-    greetingElements.greetingName.classList.remove('hidden');
-    greetingElements.editNameButton.classList.remove('hidden');
+    finishNameEdit();
   }
 
-  function cancelNameEdit() {
-    greetingElements.edit.container.classList.add('hidden');
+  function finishNameEdit() {
     greetingElements.greetingName.classList.remove('hidden');
-    greetingElements.editNameButton.classList.remove('hidden');
+    greetingElements.edit.button.classList.remove('hidden');
+
+    greetingElements.edit.input.container.classList.add('hidden');
   }
 
   function initGreeting() {
-    // Initialize elements after DOM is ready
     greetingElements = {
       timeDisplay: document.getElementById('time-display'),
       dateDisplay: document.getElementById('date-display'),
       greetingText: document.getElementById('greeting-text'),
       greetingName: document.getElementById('greeting-name'),
-      editNameButton: document.getElementById('edit-name-button'),
+
       edit: {
-        container: document.getElementById('greeting-edit-container'),
-        nameInput: document.getElementById('greeting-edit-name-input'),
-        saveButton: document.getElementById('greeting-edit-save-button'),
-        cancelButton: document.getElementById('greeting-edit-cancel-button'),
+        button: document.getElementById('edit-name-button'),
+        input: {
+          container: document.getElementById('edit-name-input-container'),
+          nameInput: document.getElementById('edit-name-input'),
+          saveButton: document.getElementById('edit-name-save-button'),
+          cancelButton: document.getElementById('edit-name-cancel-button'),
+        },
       },
     };
 
@@ -133,14 +135,14 @@
     }, 60000);
 
     // Event listeners
-    greetingElements.editNameButton.addEventListener('click', editName);
-    greetingElements.edit.saveButton.addEventListener('click', finishNameEdit);
-    greetingElements.edit.cancelButton.addEventListener('click', cancelNameEdit);
-    greetingElements.edit.nameInput.addEventListener('keydown', (e) => {
+    greetingElements.edit.button.addEventListener('click', editName);
+    greetingElements.edit.input.saveButton.addEventListener('click', saveNameEdit);
+    greetingElements.edit.input.cancelButton.addEventListener('click', finishNameEdit);
+    greetingElements.edit.input.nameInput.addEventListener('keydown', (e) => {
       if (e.key === 'Enter') {
-        finishNameEdit();
+        saveNameEdit();
       } else if (e.key === 'Escape') {
-        cancelNameEdit();
+        finishNameEdit();
       }
     });
   }
@@ -472,8 +474,8 @@
                aria-label="Mark task as ${task.completed ? 'incomplete' : 'complete'}">
         <span class="task-text">${task.text}</span>
         ${task.priority ? `<span class="task-priority ${task.priority}">${task.priority}</span>` : ''}
-        <button class="edit-task-button" aria-label="Edit task">Edit</button>
-        <button class="delete-task-button" aria-label="Delete task">Delete</button>
+        <button class="edit-task-button button-sm" aria-label="Edit task">Edit</button>
+        <button class="delete-task-button button-sm button-cancel" aria-label="Delete task">Delete</button>
       </li>
     `;
 
@@ -637,7 +639,7 @@
     `
       <div class="quick-link-item" data-id="${link.id}">
         <a href="${link.url}" target="_blank" rel="noopener noreferrer" aria-label="Open ${link.name}">${link.name}</a>
-        <button class="delete-quick-link-button" aria-label="Delete ${link.name} link">×</button>
+        <button class="delete-quick-link-button button-cancel button-thin" aria-label="Delete ${link.name} link">×</button>
       </div>
     `;
 

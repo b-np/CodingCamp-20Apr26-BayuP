@@ -30,11 +30,12 @@
       <div id="greeting-container" aria-live="polite">
         <span id="greeting-text">Hello,</span>
         <span id="greeting-name">User</span>
-        <button id="edit-name-button" class="generic-button" aria-label="Edit your name">Edit</button>
-        <div id="greeting-edit-container" class="hidden">
-          <input type="text" id="greeting-edit-name-input" aria-label="Enter your name" maxlength="50">
-          <button id="greeting-edit-save-button" class="generic-button">Save</button>
-          <button id="greeting-edit-cancel-button" class="generic-button">Cancel</button>
+        <button id="edit-name-button" class="button-sm" aria-label="Change your username">Change Username</button>
+        <div id="edit-name-input-container" class="hidden">
+          <input type="text" id="edit-name-input" aria-label="Enter your name" maxlength="50">
+          <button id="edit-name-save-button" class="button-sm" aria-label="Save username">Save</button>
+          <button id="edit-name-cancel-button" class="button-sm button-cancel"
+            aria-label="Cancel username change">Cancel</button>
         </div>
       </div>
     </section>
@@ -52,14 +53,14 @@
         </div>
       </div>
       <div id="timer-edit-controls">
-        <button id="timer-edit-button" class="generic-button" aria-label="Edit timer duration">Change Time</button>
-        <button id="timer-save-button" class="hidden generic-button" aria-label="Save timer duration">Save</button>
-        <button id="timer-cancel-button" class="hidden generic-button" aria-label="Cancel timer edit">Cancel</button>
+        <button id="timer-edit-button" aria-label="Edit timer duration">Change Time</button>
+        <button id="timer-save-button" class="hidden" aria-label="Save timer duration">Save</button>
+        <button id="timer-cancel-button" class="hidden button-cancel" aria-label="Cancel timer edit">Cancel</button>
       </div>
       <div id="timer-controls">
         <button id="timer-start-button" aria-label="Start timer">Start</button>
         <button id="timer-stop-button" aria-label="Stop timer">Stop</button>
-        <button id="timer-reset-button" aria-label="Reset timer">Reset</button>
+        <button id="timer-reset-button" class="button-cancel" aria-label="Reset timer">Reset</button>
       </div>
     </section>
 
@@ -67,17 +68,21 @@
     <section id="task-section" aria-labelledby="task-heading">
       <h2 id="task-heading">Tasks</h2>
       <div id="task-announcement" class="visually-hidden" aria-live="polite"></div>
-      <div id="task-input-area">
-        <label for="task-input">Description: </label>
-        <input type="text" id="task-input" placeholder="Add a task..." aria-label="Task description" maxlength="200">
-        <label for="task-priority">Priority: </label>
-        <select id="task-priority" aria-label="Task priority (optional)">
-          <option value="">None</option>
-          <option value="high">High</option>
-          <option value="medium">Medium</option>
-          <option value="low">Low</option>
-        </select>
-        <button id="add-task-button" aria-label="Add task">+</button>
+      <div class="input-group">
+        <div class="input-container">
+          <label for="task-input">Description: </label>
+          <input type="text" id="task-input" placeholder="Add a task..." aria-label="Task description" maxlength="200">
+        </div>
+        <div class="input-container">
+          <label for="task-priority">Priority: </label>
+          <select id="task-priority" aria-label="Task priority (optional)">
+            <option value="">None</option>
+            <option value="high">High</option>
+            <option value="medium">Medium</option>
+            <option value="low">Low</option>
+          </select>
+        </div>
+        <button id="add-task-button" class="button-highlight" aria-label="Add task">+</button>
       </div>
       <hr class="line-separator">
       <div id="task-sort">
@@ -96,12 +101,20 @@
     <!-- Quick Links Section -->
     <section id="quick-links-section" aria-labelledby="quick-links-heading">
       <h2 id="quick-links-heading">Quick Links</h2>
-      <div id="quick-link-form">
-        <label for="quick-link-label">Label</label>
-        <input type="text" id="quick-link-label" placeholder="e.g., Google" aria-label="Link label" maxlength="50">
-        <label for="quick-link-url">URL</label>
-        <input type="url" id="quick-link-url" placeholder="e.g., https://google.com, google.com" aria-label="Link URL" maxlength="500">
-        <button id="add-quick-link-button" aria-label="Add link">+</button>
+      <div class="input-group">
+        <div class="input-container">
+          <label for="quick-link-label">Label</label>
+          <input type="text" id="quick-link-label" placeholder="e.g., Google" aria-label="Link label" maxlength="50">
+        </div>
+        <div class="input-container">
+          <label for="quick-link-url">URL</label>
+          <input type="url"
+                 id="quick-link-url"
+                 placeholder="e.g., https://google.com, google.com"
+                 aria-label="Link URL"
+                 maxlength="500">
+        </div>
+        <button id="add-quick-link-button" class="button-highlight" aria-label="Add link">+</button>
       </div>
       <hr class="line-separator">
       <div id="quick-links-container" class="quick-links-grid" role="navigation" aria-label="Quick links">
