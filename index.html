@@ -30,11 +30,11 @@
       <div id="greeting-container" aria-live="polite">
         <span id="greeting-text">Hello,</span>
         <span id="greeting-name">User</span>
-        <button id="edit-name-button" aria-label="Edit your name">Edit</button>
+        <button id="edit-name-button" class="generic-button" aria-label="Edit your name">Edit</button>
         <div id="greeting-edit-container" class="hidden">
           <input type="text" id="greeting-edit-name-input" aria-label="Enter your name" maxlength="50">
-          <button id="greeting-edit-save-button">Save</button>
-          <button id="greeting-edit-cancel-button">Cancel</button>
+          <button id="greeting-edit-save-button" class="generic-button">Save</button>
+          <button id="greeting-edit-cancel-button" class="generic-button">Cancel</button>
         </div>
       </div>
     </section>
@@ -52,9 +52,9 @@
         </div>
       </div>
       <div id="timer-edit-controls">
-        <button id="timer-edit-button" aria-label="Edit timer duration">Change Time</button>
-        <button id="timer-save-button" class="hidden" aria-label="Save timer duration">Save</button>
-        <button id="timer-cancel-button" class="hidden" aria-label="Cancel timer edit">Cancel</button>
+        <button id="timer-edit-button" class="generic-button" aria-label="Edit timer duration">Change Time</button>
+        <button id="timer-save-button" class="hidden generic-button" aria-label="Save timer duration">Save</button>
+        <button id="timer-cancel-button" class="hidden generic-button" aria-label="Cancel timer edit">Cancel</button>
       </div>
       <div id="timer-controls">
         <button id="timer-start-button" aria-label="Start timer">Start</button>
@@ -86,7 +86,6 @@
           <option value="default">Default</option>
           <option value="alphabetical">Alphabetical</option>
           <option value="priority">Priority</option>
-          <option value="completion">Completion Status</option>
         </select>
       </div>
       <ul id="task-list" role="list" aria-label="Task list">

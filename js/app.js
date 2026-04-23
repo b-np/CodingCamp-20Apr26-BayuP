@@ -390,7 +390,7 @@
     const isDuplicate = tasks.some(
       task => task.text.toLowerCase() === sanitizedText.toLowerCase()
     );
-    
+
     if (isDuplicate) {
       alert("The task has a duplicate of the same name!");
       return;
@@ -447,9 +447,6 @@
       case 'priority':
         const priorityOrder = { high: 0, medium: 1, low: 2, null: 3 };
         sorted.sort((a, b) => priorityOrder[a.priority] - priorityOrder[b.priority]);
-        break;
-      case 'completion':
-        sorted.sort((a, b) => a.completed - b.completed);
         break;
       case 'default':
       default:
@@ -569,13 +566,7 @@
   // QUICK LINKS COMPONENT
   // ============================================
 
-  const quickLinkElements = {
-    labelInput: document.getElementById('quick-link-label'),
-    urlInput: document.getElementById('quick-link-url'),
-    addButton: document.getElementById('add-quick-link-button'),
-    container: document.getElementById('quick-links-container')
-  };
-
+  let quickLinkElements = null;
   let quickLinks = [];
 
   function loadQuickLinks() {
@@ -679,6 +670,14 @@
   }
 
   function initQuickLinks() {
+    // Initialize elements after DOM is ready
+    quickLinkElements = {
+      labelInput: document.getElementById('quick-link-label'),
+      urlInput: document.getElementById('quick-link-url'),
+      addButton: document.getElementById('add-quick-link-button'),
+      container: document.getElementById('quick-links-container')
+    };
+
     loadQuickLinks();
     renderQuickLinks();
 
@@ -700,10 +699,7 @@
   // THEME TOGGLE COMPONENT
   // ============================================
 
-  const themeElements = {
-    toggle: document.getElementById('theme-toggle'),
-    icon: document.querySelector('.theme-icon')
-  };
+  let themeElements = null;
 
   function getSystemTheme() {
     return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
@@ -732,6 +728,12 @@
   }
 
   function initTheme() {
+    // Initialize elements after DOM is ready
+    themeElements = {
+      toggle: document.getElementById('theme-toggle'),
+      icon: document.querySelector('.theme-icon')
+    };
+
     const theme = loadTheme();
     applyTheme(theme);
 
