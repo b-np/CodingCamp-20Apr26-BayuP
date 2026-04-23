@@ -42,6 +42,9 @@
   --border-color: #e0e0e0;
   --shadow: rgba(0, 0, 0, 0.1);
   --focus-outline: #4a90d9;
+  
+  --disabled-color: #0000002f;
+  --disabled-hover: #0000002f;
 }
 
 [data-theme="dark"] {
@@ -54,6 +57,9 @@
   --border-color: #2a2a4a;
   --shadow: rgba(0, 0, 0, 0.3);
   --focus-outline: #6db3f2;
+  
+  --disabled-color: #ffffff2f;
+  --disabled-hover: #ffffff2f;
 }
 
 html {
@@ -142,6 +148,14 @@ button:hover {
   background: var(--accent-color);
   color: white;
   border-color: var(--accent-color);
+}
+
+button:disabled {
+  background: var(--disabled-color);
+}
+
+button:disabled:hover {
+  background: var(--disabled-hover);
 }
 
 .button-thin {
