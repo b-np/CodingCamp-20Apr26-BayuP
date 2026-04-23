@@ -1,0 +1,42 @@
+﻿# Kiro spec config (user-specific)
+.kiro/specs/todo-life-dashboard/.config.kiro
+
+# OS generated files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+desktop.ini
+
+# Editor directories and files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Logs
+logs/
+*.log
+npm-debug.log*
+
+# Dependencies (if you add any later)
+node_modules/
+
+# Build outputs (if you add a build process later)
+dist/
+build/
+
+# Secrets and credentials
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+
+# Private directories
+secrets/
+private/
