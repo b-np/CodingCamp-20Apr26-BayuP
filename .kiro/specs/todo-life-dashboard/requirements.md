@@ -114,18 +114,7 @@ A simple, client-side todo list life dashboard that helps users organize their d
 4. THE Dashboard SHALL store theme preference in Local_Storage
 5. WHEN the page is loaded, THE Dashboard SHALL restore all data from Local_Storage
 
-### Requirement 7: Browser Compatibility
-
-**User Story:** As a user, I want the dashboard to work in my preferred browser, so that I can use it regardless of my browser choice.
-
-#### Acceptance Criteria
-
-1. THE Dashboard SHALL function correctly in Google Chrome (latest version)
-2. THE Dashboard SHALL function correctly in Mozilla Firefox (latest version)
-3. THE Dashboard SHALL function correctly in Microsoft Edge (latest version)
-4. THE Dashboard SHALL function correctly in Apple Safari (latest version)
-
-### Requirement 8: Performance
+### Requirement 7: Performance
 
 **User Story:** As a user, I want the dashboard to respond quickly, so that I can work efficiently without delays.
 
@@ -135,7 +124,7 @@ A simple, client-side todo list life dashboard that helps users organize their d
 2. WHEN a user interacts with any component, THE Dashboard SHALL respond within 100 milliseconds
 3. THE Dashboard SHALL function without requiring a backend server
 
-### Requirement 9: Visual Design
+### Requirement 8: Visual Design
 
 **User Story:** As a user, I want a clean and intuitive interface, so that I can easily understand and use the dashboard.
 
@@ -146,7 +135,7 @@ A simple, client-side todo list life dashboard that helps users organize their d
 3. THE Dashboard SHALL use readable typography with appropriate font sizes
 4. THE Dashboard SHALL provide adequate spacing between interactive elements
 
-### Requirement 10: Accessibility (WAI-ARIA)
+### Requirement 9: Accessibility (WAI-ARIA)
 
 **User Story:** As a user with disabilities, I want the dashboard to be accessible, so that I can use it with assistive technologies.
 

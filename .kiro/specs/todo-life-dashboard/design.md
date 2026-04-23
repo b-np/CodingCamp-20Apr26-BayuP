@@ -516,40 +516,6 @@ function property_linkIdsUnique(links) {
 }
 ```
 
-## Test Strategy
-
-### Unit Tests (Property-Based)
-
-The following functions will be tested with property-based testing using a library like fast-check or similar:
-
-1. **formatTime(seconds)** - Test all valid second values (0-1500)
-2. **getGreeting(hour)** - Test all hours (0-23)
-3. **sortTasks(tasks, criteria)** - Test with various task arrangements
-4. **Task CRUD operations** - Test round-trip persistence
-5. **Link CRUD operations** - Test round-trip persistence
-6. **Theme persistence** - Test round-trip persistence
-7. **Name persistence** - Test round-trip persistence
-
-### Integration Tests (Example-Based)
-
-The following scenarios will be tested with example-based tests:
-
-1. **Timer Flow:** Start → Wait → Stop → Verify paused → Reset → Verify reset
-2. **Task Flow:** Add task → Complete task → Verify strikethrough → Delete task
-3. **Link Flow:** Add link → Click link → Delete link
-4. **Theme Flow:** Toggle theme → Verify applied → Reload → Verify persisted
-5. **Name Flow:** Edit name → Save → Reload → Verify persisted
-
-### Manual Testing Required
-
-The following require manual testing:
-
-1. **Audio notification playback** - Browser audio API behavior
-2. **Link opening in new tab** - Browser window.open behavior
-3. **Cross-browser compatibility** - Chrome, Firefox, Edge, Safari
-4. **Performance benchmarks** - Load time and interaction responsiveness
-5. **Visual design review** - Subjective aesthetic criteria
-
 ## Implementation Notes
 
 ### UUID Generation
