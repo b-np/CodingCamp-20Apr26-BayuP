@@ -65,6 +65,15 @@ body {
   transition: background-color 0.3s ease, color 0.3s ease;
 }
 
+/* ============= */
+/* Common styles */
+/* ============= */
+.line-separator {
+  border: none;
+  border-top: 1px solid var(--border-color);
+  margin: var(--spacing-md) 0;
+}
+
 /* Skip Link for Accessibility */
 .skip-link {
   position: absolute;
@@ -157,6 +166,8 @@ section {
 }
 
 section h2 {
+  display: flex;
+  justify-content: center;
   margin-bottom: var(--spacing-md);
   color: var(--text-primary);
   font-size: 1.25rem;
@@ -165,6 +176,23 @@ section h2 {
 label[for] {
   font-size: 0.875rem;
   color: var(--text-secondary);
+}
+
+ 
+button {
+  background: transparent;
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-sm);
+  padding: var(--spacing-xs) var(--spacing-sm);
+  cursor: pointer;
+  color: var(--text-secondary);
+  transition: all 0.2s ease;
+}
+
+button:hover {
+  background: var(--accent-color);
+  color: white;
+  border-color: var(--accent-color);
 }
 
 /* Greeting Section */
@@ -229,12 +257,45 @@ label[for] {
   max-width: 200px;
 }
 
-/* Timer Section */
-#timer-section {
-  text-align: center;
+#greeting-edit-container {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+  flex-wrap: wrap;
 }
 
+#greeting-edit-name-input {
+  padding: var(--spacing-xs) var(--spacing-sm);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-sm);
+  font-size: 1rem;
+  background: var(--bg-primary);
+  color: var(--text-primary);
+  max-width: 200px;
+}
+
+#greeting-edit-save-button,
+#greeting-edit-cancel-button {
+  padding: var(--spacing-xs) var(--spacing-sm);
+  font-size: 0.875rem;
+}
+
+#greeting-edit-save-button {
+  background: var(--accent-color);
+  color: white;
+  border-color: var(--accent-color);
+}
+
+#greeting-edit-save-button:hover {
+  background: var(--accent-hover);
+}
+
+/* ============= */
+/* Timer Section */
+/* ============= */
+
 #timer-display-container {
+  text-align: center;
   margin-bottom: var(--spacing-md);
 }
 
@@ -249,8 +310,8 @@ label[for] {
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: var(--spacing-xs);
-  font-size: 2rem;
+  font-size: 3rem;
+  font-variant-numeric: tabular-nums;
 }
 
 #timer-minutes-input,
@@ -301,16 +362,16 @@ label[for] {
   transition: all 0.2s ease;
 }
 
-#start-button {
+#timer-start-button {
   background: var(--accent-color);
   color: white;
 }
 
-#start-button:hover {
+#timer-start-button:hover {
   background: var(--accent-hover);
 }
 
-#stop-button {
+#timer-stop-button {
   background: var(--priority-high);
   color: white;
 }
@@ -329,34 +390,34 @@ label[for] {
   background: var(--border-color);
 }
 
-#edit-button {
+#timer-edit-button {
   background: var(--bg-primary);
   color: var(--text-secondary);
   border: 1px solid var(--border-color);
 }
 
-#edit-button:hover {
+#timer-edit-button:hover {
   background: var(--accent-color);
   color: white;
   border-color: var(--accent-color);
 }
 
-#save-button {
+#timer-save-button {
   background: var(--priority-low);
   color: white;
 }
 
-#save-button:hover {
+#timer-save-button:hover {
   background: #219a52;
 }
 
-#cancel-button {
+#timer-cancel-button {
   background: var(--bg-primary);
   color: var(--text-secondary);
   border: 1px solid var(--border-color);
 }
 
-#cancel-button:hover {
+#timer-cancel-button:hover {
   background: var(--border-color);
 }
 
@@ -402,13 +463,6 @@ label[for] {
 
 #add-task-button:hover {
   background: var(--accent-hover);
-}
-
-/* Task separator */
-.task-separator {
-  border: none;
-  border-top: 1px solid var(--border-color);
-  margin: var(--spacing-md) 0;
 }
 
 #task-sort {

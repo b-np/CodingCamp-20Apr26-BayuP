@@ -39,14 +39,7 @@
   // GREETING COMPONENT
   // ============================================
 
-  const greetingElements = {
-    timeDisplay: document.getElementById('time-display'),
-    dateDisplay: document.getElementById('date-display'),
-    greetingText: document.getElementById('greeting-text'),
-    greetingName: document.getElementById('greeting-name'),
-    editNameButton: document.getElementById('edit-name-button'),
-    editNameInput: document.getElementById('edit-name-input')
-  };
+  let greetingElements = null;
 
   function updateTime() {
     const now = new Date();
@@ -86,25 +79,47 @@
   }
 
   function editName() {
-    greetingElements.editNameInput.value = greetingElements.greetingName.textContent;
-    greetingElements.greetingName.classList.add('hidden');
+    greetingElements.edit.nameInput.value = greetingElements.greetingName.textContent;
+
     greetingElements.editNameButton.classList.add('hidden');
-    greetingElements.editNameInput.classList.remove('hidden');
-    greetingElements.editNameInput.focus();
-    greetingElements.editNameInput.select();
+    greetingElements.greetingName.classList.add('hidden');
+    greetingElements.edit.container.classList.remove('hidden');
+    greetingElements.edit.nameInput.focus();
+    greetingElements.edit.nameInput.select();
   }
 
   function finishNameEdit() {
-    const newName = greetingElements.editNameInput.value.trim();
+    const newName = greetingElements.edit.nameInput.value.trim();
     if (newName) {
       saveName(newName);
     }
-    greetingElements.editNameInput.classList.add('hidden');
+    greetingElements.edit.container.classList.add('hidden');
+    greetingElements.greetingName.classList.remove('hidden');
+    greetingElements.editNameButton.classList.remove('hidden');
+  }
+
+  function cancelNameEdit() {
+    greetingElements.edit.container.classList.add('hidden');
     greetingElements.greetingName.classList.remove('hidden');
     greetingElements.editNameButton.classList.remove('hidden');
   }
 
   function initGreeting() {
+    // Initialize elements after DOM is ready
+    greetingElements = {
+      timeDisplay: document.getElementById('time-display'),
+      dateDisplay: document.getElementById('date-display'),
+      greetingText: document.getElementById('greeting-text'),
+      greetingName: document.getElementById('greeting-name'),
+      editNameButton: document.getElementById('edit-name-button'),
+      edit: {
+        container: document.getElementById('greeting-edit-container'),
+        nameInput: document.getElementById('greeting-edit-name-input'),
+        saveButton: document.getElementById('greeting-edit-save-button'),
+        cancelButton: document.getElementById('greeting-edit-cancel-button'),
+      },
+    };
+
     updateTime();
     updateDate();
     updateGreeting();
@@ -119,14 +134,13 @@
 
     // Event listeners
     greetingElements.editNameButton.addEventListener('click', editName);
-    greetingElements.editNameInput.addEventListener('blur', finishNameEdit);
-    greetingElements.editNameInput.addEventListener('keydown', (e) => {
+    greetingElements.edit.saveButton.addEventListener('click', finishNameEdit);
+    greetingElements.edit.cancelButton.addEventListener('click', cancelNameEdit);
+    greetingElements.edit.nameInput.addEventListener('keydown', (e) => {
       if (e.key === 'Enter') {
         finishNameEdit();
       } else if (e.key === 'Escape') {
-        greetingElements.editNameInput.classList.add('hidden');
-        greetingElements.greetingName.classList.remove('hidden');
-        greetingElements.editNameButton.classList.remove('hidden');
+        cancelNameEdit();
       }
     });
   }
@@ -308,16 +322,16 @@
 
       editControls: {
         container: document.getElementById('timer-edit-controls'),
-        editButton: document.getElementById('edit-button'),
-        saveButton: document.getElementById('save-button'),
-        cancelButton: document.getElementById('cancel-button'),
+        editButton: document.getElementById('timer-edit-button'),
+        saveButton: document.getElementById('timer-save-button'),
+        cancelButton: document.getElementById('timer-cancel-button'),
       },
       
       controls: {
         container: document.getElementById('timer-controls'),
-        startButton: document.getElementById('start-button'),
-        stopButton: document.getElementById('stop-button'),
-        resetButton: document.getElementById('reset-button'),
+        startButton: document.getElementById('timer-start-button'),
+        stopButton: document.getElementById('timer-stop-button'),
+        resetButton: document.getElementById('timer-reset-button'),
       },
 
       announcement: document.getElementById('timer-announcement')
@@ -333,7 +347,6 @@
     timerElements.editControls.saveButton.addEventListener('click', () => exitEditMode(true));
     timerElements.editControls.cancelButton.addEventListener('click', () => exitEditMode(false));
 
-    // Handle Enter key in edit mode
     timerElements.display.edit.minutesInput.addEventListener('keydown', (e) => {
       if (e.key === 'Enter') {
         exitEditMode(true);
@@ -373,9 +386,19 @@
   }
 
   function addTask(text, priority = null) {
+    const sanitizedText = sanitizeText(text);
+    const isDuplicate = tasks.some(
+      task => task.text.toLowerCase() === sanitizedText.toLowerCase()
+    );
+    
+    if (isDuplicate) {
+      alert("The task has a duplicate of the same name!");
+      return;
+    }
+
     const task = {
       id: generateId(),
-      text: sanitizeText(text),
+      text: sanitizedText,
       completed: false,
       priority: priority || null,
       createdAt: Date.now()
@@ -428,7 +451,7 @@
       case 'completion':
         sorted.sort((a, b) => a.completed - b.completed);
         break;
-      case 'creation':
+      case 'default':
       default:
         sorted.sort((a, b) => a.createdAt - b.createdAt);
     }
@@ -520,7 +543,6 @@
   }
 
   function initTasks() {
-    // Initialize elements after DOM is ready
     taskElements = {
       input: document.getElementById('task-input'),
       priority: document.getElementById('task-priority'),

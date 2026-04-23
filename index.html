@@ -31,18 +31,18 @@
         <span id="greeting-text">Hello,</span>
         <span id="greeting-name">User</span>
         <button id="edit-name-button" aria-label="Edit your name">Edit</button>
-        <input type="text" id="edit-name-input" class="hidden" aria-label="Enter your name" maxlength="50">
+        <div id="greeting-edit-container" class="hidden">
+          <input type="text" id="greeting-edit-name-input" aria-label="Enter your name" maxlength="50">
+          <button id="greeting-edit-save-button">Save</button>
+          <button id="greeting-edit-cancel-button">Cancel</button>
+        </div>
       </div>
     </section>
 
     <!-- Focus Timer Section -->
     <section id="timer-section" aria-labelledby="timer-heading">
       <h2 id="timer-heading">Focus Timer</h2>
-      <div id="timer-edit-controls">
-        <button id="edit-button" aria-label="Edit timer duration">Edit timer</button>
-        <button id="save-button" class="hidden" aria-label="Save timer duration">Save</button>
-        <button id="cancel-button" class="hidden" aria-label="Cancel timer edit">Cancel</button>
-      </div>
+      <div id="timer-announcement" class="visually-hidden" aria-live="assertive"></div>
       <div id="timer-display-container">
         <div id="timer-display" role="timer" aria-live="polite" aria-atomic="true">25:00</div>
         <div id="timer-display-edit" class="hidden">
@@ -51,17 +51,22 @@
           <input type="number" id="timer-seconds-input" min="0" max="59" value="00" aria-label="Seconds">
         </div>
       </div>
-      <div id="timer-controls">
-        <button id="start-button" aria-label="Start timer">Start</button>
-        <button id="stop-button" aria-label="Stop timer">Stop</button>
-        <button id="reset-button" aria-label="Reset timer">Reset</button>
+      <div id="timer-edit-controls">
+        <button id="timer-edit-button" aria-label="Edit timer duration">Change Time</button>
+        <button id="timer-save-button" class="hidden" aria-label="Save timer duration">Save</button>
+        <button id="timer-cancel-button" class="hidden" aria-label="Cancel timer edit">Cancel</button>
       </div>
-      <div id="timer-announcement" class="visually-hidden" aria-live="assertive"></div>
+      <div id="timer-controls">
+        <button id="timer-start-button" aria-label="Start timer">Start</button>
+        <button id="timer-stop-button" aria-label="Stop timer">Stop</button>
+        <button id="timer-reset-button" aria-label="Reset timer">Reset</button>
+      </div>
     </section>
 
     <!-- Task List Section -->
     <section id="task-section" aria-labelledby="task-heading">
       <h2 id="task-heading">Tasks</h2>
+      <div id="task-announcement" class="visually-hidden" aria-live="polite"></div>
       <div id="task-input-area">
         <label for="task-input">Description: </label>
         <input type="text" id="task-input" placeholder="Add a task..." aria-label="Task description" maxlength="200">
@@ -72,13 +77,13 @@
           <option value="medium">Medium</option>
           <option value="low">Low</option>
         </select>
-        <button id="add-task-button" aria-label="Add task">Add</button>
+        <button id="add-task-button" aria-label="Add task">+</button>
       </div>
-      <hr class="task-separator">
+      <hr class="line-separator">
       <div id="task-sort">
         <label for="sort-select">Sort by:</label>
         <select id="sort-select">
-          <option value="creation">Time Created</option>
+          <option value="default">Default</option>
           <option value="alphabetical">Alphabetical</option>
           <option value="priority">Priority</option>
           <option value="completion">Completion Status</option>
@@ -87,7 +92,6 @@
       <ul id="task-list" role="list" aria-label="Task list">
         <!-- Task items rendered here. Handled in JavaScript. -->
       </ul>
-      <div id="task-announcement" class="visually-hidden" aria-live="polite"></div>
     </section>
 
     <!-- Quick Links Section -->
@@ -98,8 +102,9 @@
         <input type="text" id="quick-link-label" placeholder="e.g., Google" aria-label="Link label" maxlength="50">
         <label for="quick-link-url">URL</label>
         <input type="url" id="quick-link-url" placeholder="e.g., https://google.com, google.com" aria-label="Link URL" maxlength="500">
-        <button id="add-quick-link-button" aria-label="Add link">Add Link</button>
+        <button id="add-quick-link-button" aria-label="Add link">+</button>
       </div>
+      <hr class="line-separator">
       <div id="quick-links-container" class="quick-links-grid" role="navigation" aria-label="Quick links">
         <!-- Link buttons rendered here -->
       </div>
