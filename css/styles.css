@@ -178,8 +178,7 @@ label[for] {
   color: var(--text-secondary);
 }
 
- 
-button {
+.generic-button {
   background: transparent;
   border: 1px solid var(--border-color);
   border-radius: var(--radius-sm);
@@ -189,7 +188,7 @@ button {
   transition: all 0.2s ease;
 }
 
-button:hover {
+.generic-button:hover {
   background: var(--accent-color);
   color: white;
   border-color: var(--accent-color);
